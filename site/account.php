@@ -1,8 +1,10 @@
 <?php
+    session_start();
+
     //Include file containing site functions
     require_once 'inc/functions.php';
 
-    //Include the page header file -->
+    //Include the page header file
     require 'inc/header.php';
 ?>
 

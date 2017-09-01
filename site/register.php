@@ -3,6 +3,9 @@
     require_once 'inc/functions.php';
 
 
+    session_start();
+
+
     //Include the page header file
     require 'inc/header.php';
 
@@ -69,6 +72,9 @@
             //Retrieve the last generated id and send an email confirmation of the mail address
             $user_id = $pdo->lastInsertId();
             mail($_POST['email'], "Confirmation de votre compte", "Afin de valider votre compte merci de cliquer sur ce lien\n\nhttp://localhost:8888/tutoriaux/php/procedural/member_area/confirm.php?id=$user_id&token=$token");
+
+            //Send a confirmation message
+            $_SESSION['flash']['success'] = "Un email de confirmation vous a été envoyé pour valider votre compte";
 
             //Redirect the user to the login page
             header('Location:login.php');

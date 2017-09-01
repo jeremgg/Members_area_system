@@ -12,19 +12,29 @@
 
 
     //Execute the query and save the result
-    //Retrieve the token of the user whose id is passed as parameter
-    $req = $pdo->prepare("SELECT confirmation_token FROM users WHERE id = ?");
+    //Retrieve the user whose ID is passed as a parameter
+    $req = $pdo->prepare("SELECT * FROM users WHERE id = ?");
     $req->execute([$user_id]);
     $user = $req->fetch();
 
+    session_start();
 
 
     //If the token of the query corresponds to the one passed as a parameter
+    //set the confirmation date and delete the token in the Database
     if($user && $user->confirmation_token == $token){
-        die('ok');
+        $req = $pdo->prepare("UPDATE users SET confirmation_token = null, confirmed_at = NOW() WHERE id = ?");
+        $req->execute([$user_id]);
+
+        //Send a confirmation message
+        $_SESSION['flash']['success'] = "Votre compte a bien été validé";
+
+        $_SESSION['auth'] = $user;   //Save the user in the session
+        header('location: account.php');
     }
     else{
-        die('pas ok');
+        $_SESSION['flash']['danger'] = "Ce token n'est plus valide";
+        header('location: login.php');
     }
 
 ?>
