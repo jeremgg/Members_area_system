@@ -14,13 +14,39 @@
         $errors = array();
 
 
+        //Connection to the database
+        require_once 'inc/db.php';
+
+
         //Check that the username and email fields are not empty and that they are in the correct format
         if(empty($_POST['username']) || !preg_match('/^[a-zA-Z0-9_]+$/', $_POST['username'])){
             $errors['username'] = "Votre pseudo n'est pas valide";
         }
+        else{
+            //Verify that the nickname does not exist in the database
+            $req = $pdo->prepare("SELECT id FROM users WHERE username = ?");
+            $req->execute([$_POST['username']]);
+            $user = $req->fetch();
+
+            //If the nickname is already taken from the database, an error message is displayed
+            if($user){
+                $errors['username'] = "Ce pseudo est déja prit";
+            }
+        }
 
         if(empty($_POST['email']) || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)){
             $errors['email'] = "Votre email n'est pas valide";
+        }
+        else{
+            //Verify that the email does not exist in the database
+            $req = $pdo->prepare("SELECT id FROM users WHERE email = ?");
+            $req->execute([$_POST['email']]);
+            $user = $req->fetch();
+
+            //If the email is already taken from the database, an error message is displayed
+            if($user){
+                $errors['email'] = "Cet email est déja utilisé";
+            }
         }
 
 
@@ -31,7 +57,14 @@
         }
 
 
-        debug($errors);
+        //If there are no errors, the user is register in the database
+        if(empty($errors)){
+            $req = $pdo->prepare("INSERT INTO users SET username = ?, email = ?, password = ?");
+
+            //Encrypt the user's password and execute the request
+            $password = password_hash ($_POST['password'], PASSWORD_BCRYPT);
+            $req->execute([$_POST['username'], $_POST['email'], $password]);
+        }
     }
 ?>
 
@@ -39,6 +72,20 @@
 
 
 <h1>S'inscrire</h1>
+
+
+<!-- Display an error message if the form contains errors -->
+<?php  if(!empty($errors)) : ?>
+    <div class="alert alert-danger">
+        <p>Vous n'avez pas rempli le formulaire correctement</p>
+        <ul>
+            <?php foreach ($errors as $error) : ?>
+                <li><?= $error; ?></li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+<?php endif; ?>
+
 
 <!-- Display the register form -->
 <form action="" method="post">
