@@ -59,11 +59,20 @@
 
         //If there are no errors, the user is register in the database
         if(empty($errors)){
-            $req = $pdo->prepare("INSERT INTO users SET username = ?, email = ?, password = ?");
+            $req = $pdo->prepare("INSERT INTO users SET username = ?, email = ?, password = ?, confirmation_token = ?");
 
             //Encrypt the user's password and execute the request
             $password = password_hash ($_POST['password'], PASSWORD_BCRYPT);
-            $req->execute([$_POST['username'], $_POST['email'], $password]);
+            $token = str_random(60);  //define a random number of 60 digits
+            $req->execute([$_POST['username'], $_POST['email'], $password, $token]);
+
+            //Retrieve the last generated id and send an email confirmation of the mail address
+            $user_id = $pdo->lastInsertId();
+            mail($_POST['email'], "Confirmation de votre compte", "Afin de valider votre compte merci de cliquer sur ce lien\n\nhttp://localhost:8888/tutoriaux/php/procedural/member_area/confirm.php?id=$user_id&token=$token");
+
+            //Redirect the user to the login page
+            header('Location:login.php');
+            exit();
         }
     }
 ?>
