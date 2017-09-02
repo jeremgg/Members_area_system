@@ -47,7 +47,7 @@
     </div>
 
     <div class="form-group">
-        <label for="">Mot de passe</label>
+        <label for="">Mot de passe<a href="forget.php">(J'ai oublié mon mot de passe)</a></label>
         <input type="password" name="password" class="form-control">
     </div>
 
