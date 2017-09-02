@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  localhost:8889
--- Généré le :  Jeu 31 Août 2017 à 14:46
+-- Généré le :  Jeu 31 Août 2017 à 17:31
 -- Version du serveur :  5.5.42
 -- Version de PHP :  7.0.0
 
@@ -34,7 +34,8 @@ CREATE TABLE `users` (
   `confirmation_token` varchar(60) DEFAULT NULL,
   `confirmed_at` datetime DEFAULT NULL,
   `reset_token` varchar(60) DEFAULT NULL,
-  `reset_at` datetime DEFAULT NULL
+  `reset_at` datetime DEFAULT NULL,
+  `remember_token` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --

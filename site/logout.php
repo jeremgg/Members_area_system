@@ -3,6 +3,10 @@
     session_start();
 
 
+    //Deleting the remember cookie that memorizes the connection
+    setcookie('remember', null, -1);
+
+
     //Delete the authentication session
     unset($_SESSION['auth']);
 

@@ -6,10 +6,6 @@
     session_start();
 
 
-    //Include the page header file
-    require 'inc/header.php';
-
-
     //Verify that data has been send via the registration form
     if(!empty($_POST)){
 
@@ -82,6 +78,12 @@
         }
     }
 ?>
+
+
+
+
+<!-- Include the page header file -->
+<?php require 'inc/header.php'; ?>
 
 
 
