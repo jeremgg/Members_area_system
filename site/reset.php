@@ -65,7 +65,7 @@
         <input type="password" name="password" class="form-control">
     </div>
     <div class="form-group">
-        <label for="">Confirmation du Mot de passe<a href="forget.php">(J'ai oublié mon mot de passe)</a></label>
+        <label for="">Confirmation du Mot de passe</label>
         <input type="password" name="password-confirm" class="form-control">
     </div>
     <button type="submit" class="btn btn-primary">Réinitialiser mon mot de passe</button>
