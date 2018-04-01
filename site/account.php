@@ -12,7 +12,10 @@
     //Verify that the password change form sent data
     //And that the password fields have the same value
     if(!empty($_POST)){
-        if(empty($_POST['password']) || $_POST['password'] != $_POST['password-confirm']){
+        if(empty($_POST['password']) || empty($_POST['password-confirm'])){
+            $_SESSION['flash']['danger'] = "Tous les champs de formulaires doivent être renseignés";
+        }
+        else if(empty($_POST['password']) || $_POST['password'] != $_POST['password-confirm']){
             $_SESSION['flash']['danger'] = "Les mots de passes ne correspondent pas";
         }
         else{
